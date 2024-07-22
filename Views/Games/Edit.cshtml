@@ -1,0 +1,67 @@
+﻿@model GameZone.ViewModels.EditGameFormViewModel
+
+@{
+	ViewData["Title"] = "Edit Game";
+}
+
+<h5>
+	<button type="button" class="btn btn-outline-secondary">
+		<i class="bi bi-plus-circle-dotted"> Edit game</i>
+	</button>
+</h5>
+
+<form asp-controller="Games" asp-action="Edit" enctype="multipart/form-data">
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group">
+				<label asp-for="Name" class="form-label mt-4"></label>
+				<input type="text" class="form-control" asp-for="Name" placeholder="Name of game">
+				<span class="text-bg-danger" asp-validation-for="Name"></span>
+
+			</div>
+			<div class="form-group">
+				<label asp-for="CategoryId" class="form-label mt-4"></label>
+				<select class="form-select " asp-for="CategoryId" asp-items="Model.Categories" data-placeholder="Select Category" data-minimum-results-for-search="Infinity">
+					<option></option>
+				</select>
+				<span class="text-bg-danger" asp-validation-for="CategoryId"></span>
+
+			</div>
+			<div class="form-group">
+				<label asp-for="SelectedDevices" class="form-label mt-4"></label>
+				<select class="form-select " asp-for="SelectedDevices" asp-items="Model.Devices" data-placeholder="Select Devices">
+					<option></option>
+				</select>
+				<span class="text-bg-danger" asp-validation-for="SelectedDevices"></span>
+			</div>
+			<div>
+				<label asp-for="Description" class="form-label mt-4"></label>
+				<textarea asp-for="Description" class="form-control" placeholder="Description"></textarea>
+				<span class="text-bg-danger" asp-validation-for="Description"></span>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label asp-for="Cover" class="form-label mt-4"></label>
+					<input type="file" class="form-control" asp-for="Cover"
+						   data-rule-extension="@GameZone.Settings.ImageLocation.AllowedExtensions.Replace(".",string.Empty)"
+						   data-msg-extension="Not allowed extension"
+						   data-rule-filesize="@GameZone.Settings.ImageLocation.MaxFileSizeInByte"
+						   data-msg-filesize="max allowedsize is 1MB ">
+					<small class="form-text text-muted">Only used image with .jpg , .jpeg ,.png and max size is 1M d-block </small>
+					<span class="text-bg-danger d-block" asp-validation-for="Cover"></span>
+
+				</div>
+				<button type="submit" class="btn btn-secondary mt-4 ">Save</button>
+			</div>
+		</div>
+		<div class="col-md-6 d-flex justify-content-center pt-5 overflow-hidden ">
+			<img src="@($"{ImageLocation.ImagePath}/{Model.currentCover}")" class="cover-preview " alt="Cover" />
+		</div>
+	</div>
+</form>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+	<script src="~/js/filesize-validator.js" asp-append-version="true"></script>
+	<script src="~/js/gameform.js" asp-append-version="true"></script>
+}
